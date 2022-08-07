@@ -58,22 +58,22 @@ public:
         std::cin >> temp;
         switch (temp) {
         case 1:
-            race = HUMAN;
+            race = Race::HUMAN;
             break;
         case 2:
-            race = ELF;
+            race = Race::ELF;
             break;
         case 3:
-            race = DWARF;
+            race = Race::DWARF;
             break;
         case 4:
-            race = ORC;
+            race = Race::ORC;
             break;
         case 5:
-            race = TROLL;
+            race = Race::TROLL;
             break;
         default:
-            race = HUMAN;
+            race = Race::HUMAN;
             "Your race is being set to HUMAN as default....\n";
             break;
         }
@@ -115,7 +115,7 @@ public:
 
 class Preist : public Player {
 private:
-    std::vector<const Preist> preists;
+    std::vector<Preist> preists;
 public:
     Preist(string name = "default_warrior", Race race = HUMAN, int hitPoints = 100, int magicPoints = 200) : Player(name, race, hitPoints, magicPoints) {
         name = this->Preist::getName();
