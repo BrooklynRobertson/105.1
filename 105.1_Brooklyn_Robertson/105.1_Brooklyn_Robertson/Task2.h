@@ -4,10 +4,10 @@
 #include <iostream>
 using namespace std;
 
-enum Race {
-	HUMAN,
-	ELF,
-	DWARF,
-	ORC,
-	TROLL
-};
+enum class Race {
+	HUMAN = 1,
+	ELF = 2,
+	DWARF = 3,
+	ORC = 4,
+	TROLL = 5
+}race;

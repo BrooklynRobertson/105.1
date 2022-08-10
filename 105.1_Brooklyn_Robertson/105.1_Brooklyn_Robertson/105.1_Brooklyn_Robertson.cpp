@@ -9,12 +9,14 @@ class Player {
     int hitPoints;
     int magicPoints;
 public:
-    Player(string name = "player", Race race = HUMAN, int hitPoints = 0, int magicPoints = 0) {
-        name = Player::getName();
-        race = Player::getRace();
+    Player(string name = "player", Race race = Race::HUMAN, int hitPoints = 0, int magicPoints = 0) {
+        name = this->name;
+        //name = Player::name;
+        race = this->Player::race;
+        //std::string raceStr = ;
         hitPoints = this->Player::hitPoints;
         magicPoints = this->Player::magicPoints;
-    };
+     };
 
     string getName() {
         return name;
@@ -26,26 +28,47 @@ public:
        std::cin >> name;
     }
 
-    Race getRace() {
+    const char* getRaceName(enum Race race) {
         switch (race) {
-        case 0:
-            race =  HUMAN;
+        case Race::HUMAN:
+            return "HUMAN";
             break;
-        case 1:
-            race = ELF;
+        case Race::ELF:
+            return "ELF";
             break;
-        case 2:
-            race = DWARF;
+        case Race::DWARF:
+            return "DWARF";
             break;
-        case 3:
-            race = ORC;
+        case Race::ORC:
+            return "ORC";
             break;
-        case 4:
-            race = TROLL;
+        case Race::TROLL:
+            return "TROLL";
+            break;
+        }
+    }
+    
+    Race getRace() {
+        getRaceName(race);
+        switch (race) {
+        case Race::HUMAN:
+            getRaceName(race);
+            break;
+        case Race::ELF:
+            
+            break;
+        case Race::DWARF:
+           
+            break;
+        case Race::ORC:
+            
+            break;
+        case Race::TROLL:
+            
             break;
         default:
-            race = HUMAN;
-            "Your race is being set to HUMAN as default....\n";
+           race = Race::HUMAN;
+            std::cout << "Your race is set to HUMAN as default....\n";
             break;
         }
         return race;
@@ -101,44 +124,44 @@ public:
 
 class Warrior : public Player {
 private:
-    std::vector<Warrior> warriors;
+    //std::vector<Warrior> warriors;
 public:
-    Warrior(string name = "default_warrior", Race race = HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
-        name = this->Warrior::getName();
+    Warrior(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
+        name = this-> Player::getName();
         race = this->getRace();
     }
     string attack() {
         return "\nI will destroy you with my sword!\n";
     }
-    ~Warrior() { delete[] & warriors; };
+    //~Warrior() { delete[] & warriors; };
 };
 
 class Preist : public Player {
 private:
-    std::vector<Preist> preists;
+    //std::vector<Preist> preists;
 public:
-    Preist(string name = "default_warrior", Race race = HUMAN, int hitPoints = 100, int magicPoints = 200) : Player(name, race, hitPoints, magicPoints) {
+    Preist(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200) : Player(name, race, hitPoints, magicPoints) {
         name = this->Preist::getName();
         race = this->getRace();
     }
     string attack() {
         return "\nI will assault you with holy wrath!\n";
     }
-    ~Preist() { delete[] & preists; };
+    //~Preist() { delete[] & preists; };
 };
 
 class Mage : public Player {
 private:
-    std::vector<Mage> mages;
+    //std::vector<Mage> mages;
 public:
-    Mage(string name = "default_warrior", Race race = HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
+    Mage(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
         name = this->Mage::getName();
         race = this->getRace();
     }
     string attack() {
         return "\nI will crush you with my arcane missiles!\n";
     }
-    ~Mage() { delete[] &mages; };
+    //~Mage() { delete[] &mages; };
 };
 
 void showAllPlayers() {
@@ -164,6 +187,8 @@ int main()
         std::vector< Preist> preists;
         std::vector< Mage> mages;
 
+        Player *type;
+
         Warrior w;
        Preist p;
        Mage m;
@@ -176,10 +201,16 @@ int main()
            switch (choice) {
            case 1:
                std::cout << "You chose Warrior!\n";
-              w = *new Warrior();
+               type = &w;
+              //w = *new Warrior();
               w.setName();
-               w.setRace();
+              std::cout << "Name updated: " << w.getName() << "\n";
+               
                warriors.push_back(w.getName());
+               
+               w.setRace();
+               std::cout << "Your new race is " << w.getRaceName(w.getRace()) << ".\n";
+
                break;
            case 2:
                std::cout << "You chose Preist!\n";
