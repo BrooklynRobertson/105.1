@@ -1,263 +1,188 @@
 // brooklyn_robertson_105.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "Task2.h"
+#include "Task1.h"
 
-class Player {
-    string name;
-    Race race;
-    int hitPoints;
-    int magicPoints;
+
+
+
+class Yacht {
+
+protected:
+    int serialNumber;
+    Location *location;
+
+
 public:
-    Player(string name = "player", Race race = Race::HUMAN, int hitPoints = 0, int magicPoints = 0) {
-        name = this->name;
-        //name = Player::name;
-        race = this->Player::race;
-        //std::string raceStr = ;
-        hitPoints = this->Player::hitPoints;
-        magicPoints = this->Player::magicPoints;
-     };
-
-    string getName() {
-        return name;
-    }
-    
- 
-    void setName() {
-       std::cout << "What would you like your player to be called?\n\t\t";
-       std::cin >> name;
+    Yacht(){}
+    Yacht(int serialNumber) {
+        this->serialNumber = serialNumber;
+        //this->Yacht::location = Location::getpos();
+        // yachtCount++;
+         //latitude = this->Yacht::get_pos();
+         //this->Yacht::get_pos() = longitude;
     }
 
-    const char* getRaceName(enum Race race) {
-        switch (race) {
-        case Race::HUMAN:
-            return "HUMAN";
-            break;
-        case Race::ELF:
-            return "ELF";
-            break;
-        case Race::DWARF:
-            return "DWARF";
-            break;
-        case Race::ORC:
-            return "ORC";
-            break;
-        case Race::TROLL:
-            return "TROLL";
-            break;
+
+    Location get_pos(vector<string> *lat, vector<string> *lon) {
+     Yacht::location->getpos() = *lat , lon;
+        return *location;
+    }
+
+    void display(Location latitude, Location longitude) {
+        std::cout << "Yacht serial number: " << serialNumber <<
+            "\t Yacht Location: ";
+
+    }
+
+
+};
+
+
+
+
+
+    class Location : public Yacht {
+    private:
+        //member variables
+        int degrees;
+        float minutes;
+        char direction;
+
+        //lat and long vectors to store
+        std::vector<string> longitude, latitude;
+
+
+    public:
+        //Default constructor with default values
+        Location(int degrees = 0, float minutes = 0, char direction = ' ') {
+            this->degrees = degrees;
+            this->minutes = minutes;
+            this->direction = direction;
         }
-    }
-    
-    Race getRace() {
-        getRaceName(race);
-        switch (race) {
-        case Race::HUMAN:
-            getRaceName(race);
+
+        bool isLat;//bool to validate latitude values
+        bool isLong;
+
+        //get latitude & longitude position (degree, minutes and direction) from user (then store in vector)
+        std::vector<string> getpos() {
+
+            std::cout << "Please enter degrees: (between 0-180)\n";
+            std::cin >> degrees;
+
+            std::cout << "Please enter minutes: (0-60)\n";
+            std::cin >> minutes;
+
+            while (isLong) {
+                if (degrees < 180 && degrees > -180) {
+
+                    longitude.push_back(std::to_string(degrees) + "\xF8");//add degrees to longi vector & add degree character
+                    longitude.push_back(std::to_string(minutes) + "\x27"); //add minutes to longivector & add apostrophe character
+                    std::cout << "Please enter direction ('N','S','E', or 'W': \n";
+                    std::cin >> direction;
+                    if (toupper(direction) == 'N' || 'S' || 'E' || 'W') {
+                        longitude.push_back(std::to_string(direction));
+                        isLong = false;
+                        isLat = true;
+                    }
+                    else {
+                        longitude.push_back(std::to_string(direction));//if all else fails, add what user said.
+                        isLong = false;
+                        isLat = true;
+                    }
+                }
+            }
+            while (isLat) {
+                if (degrees < 90 && degrees > -90) {
+                    std::cout << "Please enter 'N' for North or 'S' for South: \n";
+                    std::cin >> direction;
+
+                    latitude.push_back(std::to_string(degrees) + "\xF8");//add degrees to latitude vector & add degree character
+                    latitude.push_back(std::to_string(minutes) + "\x27"); //add minutes to lat vector & add apostrophe character
+
+                    //figure out whether to use N or S
+                    switch (toupper(direction)) {
+                    case 'N':
+                        latitude.push_back(" N");
+                        isLat = false;
+                        isLong = true;
+                        break;
+                    case 'S':
+                        latitude.push_back(" S");
+                        isLat = false;
+                        isLong = true;
+                        break;
+                    default:
+                        latitude.push_back(std::to_string(direction));//if all else fails, add what user said.
+                        break;
+                    }
+                    isLat = false;
+                    isLong = true;
+                }
+                else {
+                    std::cout << "Latitude must be 0 - 89\xF8..... \n";
+                    std::cin.clear();
+                }
+            }
+
+        }
+
+
+
+
+        /*if (degrees < 0  || degrees > 180) {
+            std::cout << "number must be or be between 0 and 180!\n";
+        }
+        else {
+            if (degrees == 0 || degrees <= 90) {
+                latitude = degrees;
+            else if (degrees == 180 || degrees > 90) {
+                longitude = degrees;
+            }
+            }
+        }*/
+        /*std::cout << "Please enter direction: ('N','S','E' or 'W')\n";
+        std::cin >> direction;
+        switch (std::tolower(direction)) {
+        case 'n':
+            compassDirection = Direction::N;
             break;
-        case Race::ELF:
-            
+        case 's':
+            compassDirection = Direction::S;
+        case 'e':
+            compassDirection = Direction::E;
             break;
-        case Race::DWARF:
-           
-            break;
-        case Race::ORC:
-            
-            break;
-        case Race::TROLL:
-            
+        case 'w':
+            compassDirection = Direction::W;
             break;
         default:
-           race = Race::HUMAN;
-            std::cout << "Your race is set to HUMAN as default....\n";
             break;
-        }
-        return race;
-    }
+        }*/
+       // std::cout << "Coordinates recorded.....\n";
 
-    void setRace() {
-        int temp;
-        std::cout << "Which race do you want?\n\t\t" <<
-            "1. Human!\n2. Elf\n3. Dwarf!\n4. Orc!\n5. Troll!\n";
-        std::cin >> temp;
-        switch (temp) {
-        case 1:
-            race = Race::HUMAN;
-            break;
-        case 2:
-            race = Race::ELF;
-            break;
-        case 3:
-            race = Race::DWARF;
-            break;
-        case 4:
-            race = Race::ORC;
-            break;
-        case 5:
-            race = Race::TROLL;
-            break;
-        default:
-            race = Race::HUMAN;
-            "Your race is being set to HUMAN as default....\n";
-            break;
-        }
-    }
     
-    int getHitPoints() {
-        return hitPoints;
-    }
-
-    void setHitPoints(int hitPoints) {
-        std::cout << "Hit points updated to: " << hitPoints;
-    }
-    
-    int getMagicPoints() {
-        return magicPoints;
-    }
-    
-    void setMagicPoints(int magicPoints) {
-        std::cout << "Magic points updated to: " << magicPoints;
-    }
-    string attack() {
-        return "No attack method defined yet!";
-    }
 };
 
-class Warrior : public Player {
-private:
-    //std::vector<Warrior> warriors;
-public:
-    Warrior(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
-        name = this-> Player::getName();
-        race = this->getRace();
-    }
-    string attack() {
-        return "\nI will destroy you with my sword!\n";
-    }
-    //~Warrior() { delete[] & warriors; };
-};
 
-class Preist : public Player {
-private:
-    //std::vector<Preist> preists;
-public:
-    Preist(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200) : Player(name, race, hitPoints, magicPoints) {
-        name = this->Preist::getName();
-        race = this->getRace();
-    }
-    string attack() {
-        return "\nI will assault you with holy wrath!\n";
-    }
-    //~Preist() { delete[] & preists; };
-};
-
-class Mage : public Player {
-private:
-    //std::vector<Mage> mages;
-public:
-    Mage(string name = "default_warrior", Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) : Player(name, race, hitPoints, magicPoints) {
-        name = this->Mage::getName();
-        race = this->getRace();
-    }
-    string attack() {
-        return "\nI will crush you with my arcane missiles!\n";
-    }
-    //~Mage() { delete[] &mages; };
-};
-
-void showAllPlayers() {
-   
-    std::cout << "-----------" << "\n WARRIORS LIST: \n" << "-----------";
-    
-    
-    //for (int i = 0; i < x.size(); i++) {
-    //    for (int j = 0; j < 5; j++) {
-    //        std::cout << j;
-      //  }
-        // std::cout << "\n";
-  //  }
-
-
-}
 
 int main()
 {
-    
-        int choice{0};
-        std::vector< Warrior> warriors;
-        std::vector< Preist> preists;
-        std::vector< Mage> mages;
-
-        Player *type;
-
-        Warrior w;
-       Preist p;
-       Mage m;
-
-       do {
-           std::cout << "CHARACTER CREATION:\n" << "Which of the following would you like?\n\t\t" <<
-               "1. Create a Warrior!\n 2. Create a Preist!\n 3. Create a Mage!\n 4. Finish creating player characters!\n";
-           std::cin >> choice;
-
-           switch (choice) {
-           case 1:
-               std::cout << "You chose Warrior!\n";
-               type = &w;
-              //w = *new Warrior();
-              w.setName();
-              std::cout << "Name updated: " << w.getName() << "\n";
-               
-               warriors.push_back(w.getName());
-               
-               w.setRace();
-               std::cout << "Your new race is " << w.getRaceName(w.getRace()) << ".\n";
-
-               break;
-           case 2:
-               std::cout << "You chose Preist!\n";
-               p = *new Preist();
-               p.setName();
-               p.setRace();
-               preists.push_back(p.getName());
-               break;
-           case 3:
-               std::cout << "You chose Warrior!\n";
-               w = *new Warrior();
-               w.setName();
-               w.setRace();
-               mages.push_back(m.getName());
-               break;
-           case 4:
-               for (int i = 0; i < warriors.size(); i++) {
-                   std::cout << &warriors[i];
-               }
-               /*for (int i = 0; i < preists.size(); i++) {
-                   std::cout << preists[i];
-               }
-               for (int i = 0; i < mages.size(); i++) {
-                   std::cout << mages[i];
-               }*/
-               std::cout << "Character Creation Done!.......\n You can now move to the next level!\n";
-               //showAllPlayers();
-               return 0;
-               
-               break;
-           default:
-               std::cout << "Try again........\n";
-               break;
-           }
-       } while (choice != 4);
-             
+    std::vector<Yacht*> yachts;
+    for (int i = 0; i < 3; i++) {
+        yachts.push_back(new Yacht(i));
     }
-   
 
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+       
+    }
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
+    // Debug program: F5 or Debug > Start Debugging menu
+
+    // Tips for Getting Started: 
+    //   1. Use the Solution Explorer window to add/manage files
+    //   2. Use the Team Explorer window to connect to source control
+    //   3. Use the Output window to see build output and other messages
+    //   4. Use the Error List window to view errors
+    //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
+    //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
