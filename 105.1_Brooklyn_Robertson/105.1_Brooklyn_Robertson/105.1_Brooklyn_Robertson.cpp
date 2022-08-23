@@ -1,180 +1,130 @@
 // brooklyn_robertson_105.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "Task1.h"
+
+#include "Task1.h";
 
 
+class Location   {
+private:
+    int degrees;
+    float minutes;
+    char direction;
 
+public:
+    std::string position;
+    //Default constructor with default values
+    Location(int degrees = 0, float minutes = 0, char direction = 'x') {
+        this->degrees = degrees;
+        this->minutes = minutes;
+        this->direction = direction;
+
+        //this->position = std::to_string(degrees) + "\xf8" + std::to_string(minutes) + "'" + direction;
+
+    }
+
+    //function to get location
+    Location getpos() {
+        std::cout << "Please enter degrees: (between 0-180)\n";
+        std::cin >> degrees;
+
+        std::cout << "Please enter minutes: (0-60)\n";
+        std::cin >> minutes;
+
+        std::cout << "Please enter direction ('N', 'S', 'E' or 'W')\n";
+        std::cin >> direction;
+
+
+        Location located = degrees + minutes + direction;
+        return located;
+    }
+};
 
 class Yacht {
 
 protected:
+    
     int serialNumber;
-    Location *location;
-
+    Location* latitude = { new Location() };
+    Location* longitude{ new Location() };
 
 public:
-    Yacht(){}
+    
+    
+
     Yacht(int serialNumber) {
-        this->serialNumber = serialNumber;
-        //this->Yacht::location = Location::getpos();
-        // yachtCount++;
-         //latitude = this->Yacht::get_pos();
-         //this->Yacht::get_pos() = longitude;
-    }
+            this->serialNumber = serialNumber;
+            
+        }
 
 
-    Location get_pos(vector<string> *lat, vector<string> *lon) {
-     Yacht::location->getpos() = *lat , lon;
-        return *location;
-    }
+    //function to recieve user input for a location
+    Location get_pos() {
+        Location location{ location.getpos() };
+       /* *latitude = latitude->getpos();
+        *longitude = longitude->getpos();*/
 
-    void display(Location latitude, Location longitude) {
-        std::cout << "Yacht serial number: " << serialNumber <<
-            "\t Yacht Location: ";
-
-    }
-
-
-};
-
-
-
-
-
-    class Location : public Yacht {
-    private:
-        //member variables
         int degrees;
         float minutes;
         char direction;
-
-        //lat and long vectors to store
-        std::vector<string> longitude, latitude;
-
-
-    public:
-        //Default constructor with default values
-        Location(int degrees = 0, float minutes = 0, char direction = ' ') {
-            this->degrees = degrees;
-            this->minutes = minutes;
-            this->direction = direction;
-        }
-
-        bool isLat;//bool to validate latitude values
-        bool isLong;
-
-        //get latitude & longitude position (degree, minutes and direction) from user (then store in vector)
-        std::vector<string> getpos() {
-
-            std::cout << "Please enter degrees: (between 0-180)\n";
-            std::cin >> degrees;
-
-            std::cout << "Please enter minutes: (0-60)\n";
-            std::cin >> minutes;
-
-            while (isLong) {
-                if (degrees < 180 && degrees > -180) {
-
-                    longitude.push_back(std::to_string(degrees) + "\xF8");//add degrees to longi vector & add degree character
-                    longitude.push_back(std::to_string(minutes) + "\x27"); //add minutes to longivector & add apostrophe character
-                    std::cout << "Please enter direction ('N','S','E', or 'W': \n";
-                    std::cin >> direction;
-                    if (toupper(direction) == 'N' || 'S' || 'E' || 'W') {
-                        longitude.push_back(std::to_string(direction));
-                        isLong = false;
-                        isLat = true;
-                    }
-                    else {
-                        longitude.push_back(std::to_string(direction));//if all else fails, add what user said.
-                        isLong = false;
-                        isLat = true;
-                    }
-                }
-            }
-            while (isLat) {
-                if (degrees < 90 && degrees > -90) {
-                    std::cout << "Please enter 'N' for North or 'S' for South: \n";
-                    std::cin >> direction;
-
-                    latitude.push_back(std::to_string(degrees) + "\xF8");//add degrees to latitude vector & add degree character
-                    latitude.push_back(std::to_string(minutes) + "\x27"); //add minutes to lat vector & add apostrophe character
-
-                    //figure out whether to use N or S
-                    switch (toupper(direction)) {
-                    case 'N':
-                        latitude.push_back(" N");
-                        isLat = false;
-                        isLong = true;
-                        break;
-                    case 'S':
-                        latitude.push_back(" S");
-                        isLat = false;
-                        isLong = true;
-                        break;
-                    default:
-                        latitude.push_back(std::to_string(direction));//if all else fails, add what user said.
-                        break;
-                    }
-                    isLat = false;
-                    isLong = true;
-                }
-                else {
-                    std::cout << "Latitude must be 0 - 89\xF8..... \n";
-                    std::cin.clear();
-                }
-            }
-
-        }
-
-
-
-
-        /*if (degrees < 0  || degrees > 180) {
-            std::cout << "number must be or be between 0 and 180!\n";
-        }
-        else {
-            if (degrees == 0 || degrees <= 90) {
-                latitude = degrees;
-            else if (degrees == 180 || degrees > 90) {
-                longitude = degrees;
-            }
-            }
-        }*/
-        /*std::cout << "Please enter direction: ('N','S','E' or 'W')\n";
+        std::cout << "Please enter degrees: (between 0-180)\n";
+        std::cin >> degrees;
+        degrees += '\xF8';
+        std::cout << "Please enter minutes: (0-60)\n";
+        std::cin >> minutes;
+        
+        std::cout << "Please enter direction ('N', 'S', 'E' or 'W')\n";
         std::cin >> direction;
-        switch (std::tolower(direction)) {
-        case 'n':
-            compassDirection = Direction::N;
-            break;
-        case 's':
-            compassDirection = Direction::S;
-        case 'e':
-            compassDirection = Direction::E;
-            break;
-        case 'w':
-            compassDirection = Direction::W;
-            break;
-        default:
-            break;
-        }*/
-       // std::cout << "Coordinates recorded.....\n";
 
-    
-};
+        location = degrees + '\xF8' + minutes + '.' + direction;
+        //std::string position = std::to_string(degrees) + "\xF8" + std::to_string(minutes) + "'" + direction;
+       // display(*latitude, *longitude);
+        
+        return location;
+    }
+        
 
+
+        void display(Location latitude, Location longitude) {
+            //std::string position = std::to_string(degrees) + "\xF8" + std::to_string(minutes) + "'" + direction;
+            std::cout << "Yacht serial number: " << serialNumber <<
+                "\t Yacht Location: " << "\n Latitude: " << this->latitude <<
+                "\t Longitude: " << this->longitude;
+
+        }
+
+    };
 
 
 int main()
-{
-    std::vector<Yacht*> yachts;
-    for (int i = 0; i < 3; i++) {
-        yachts.push_back(new Yacht(i));
+{ 
+    int yachtCount{0}; //counter for each yacht created
+    Location lat, lon;
+    std::vector<Yacht> contestants; //vector to store our yachts(contestents in race)
+    
+    //Yacht *y(0);
+
+    //make yachts
+   /* for (int i = 0; i < 3; i++) {*/
+        std::cout << "Enter details for Yacht " << 1 << ": \n";
+        yachtCount++;
+         contestants.push_back(Yacht(1));
+        std::cout << "Yacht recorded!\n";
+       
+   // }
+    
+        
+    //print yachts
+    for (int i = 0; i < contestants.size(); i++) {
+        
+       contestants[i].display(contestants[i].get_pos(), contestants[i].get_pos());
     }
+}
+   
 
 
        
-    }
+    
 
     // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
     // Debug program: F5 or Debug > Start Debugging menu
