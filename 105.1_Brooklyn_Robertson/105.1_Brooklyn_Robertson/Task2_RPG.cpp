@@ -10,6 +10,7 @@ protected:
     int hitPoints;
     int magicPoints;
 public:
+    //default constructor, initializes a player with preset values
     Player(string name = "player", Race race = Race::HUMAN, int hitPoints = 0, int magicPoints = 0) {
         this->name = name;
         //name = Player::name;
@@ -29,7 +30,7 @@ public:
         std::cin >> name;
     }
 
-    const char* getRaceName(enum Race race) {
+    const char* getRaceName(enum Race race) {//enum gets race name, and returns a const char pointer for easy access
         switch (race) {
         case Race::HUMAN:
             return "HUMAN";
@@ -52,25 +53,25 @@ public:
     Race getRace() {
         getRaceName(race);
         switch (race) {
-        case Race::HUMAN:
-            getRaceName(race);
-            break;
-        case Race::ELF:
+            /*case Race::HUMAN:
+                getRaceName(race);
+                break;
+            case Race::ELF:
 
-            break;
-        case Race::DWARF:
+                break;
+            case Race::DWARF:
 
-            break;
-        case Race::ORC:
+                break;
+            case Race::ORC:
 
-            break;
-        case Race::TROLL:
+                break;
+            case Race::TROLL:
 
-            break;
-        default:
-            race = Race::HUMAN;
-            std::cout << "Your race is set to HUMAN as default....\n";
-            break;
+                break;
+            default:
+                race = Race::HUMAN;
+                std::cout << "Your race is set to HUMAN as default....\n";
+                break;*/
         }
         return race;
     }
@@ -125,9 +126,10 @@ public:
 
 class Warrior : public Player {
 private:
-    //std::vector<Warrior> warriors;
+
+
 public:
-    Warrior(Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0){
+    Warrior(Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) {
         this->name = Player::getName();
         this->race = getRace();
     }
@@ -139,9 +141,8 @@ public:
 
 class Preist : public Player {
 private:
-    //std::vector<Preist> preists;
 public:
-    Preist(Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200){
+    Preist(Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200) {
         this->name = Player::getName();
         this->race = getRace();
     }
@@ -156,7 +157,7 @@ private:
     //std::vector<Mage> mages;
 public:
     Mage() {}
-    Mage(string name, Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0){
+    Mage(string name, Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) {
         this->name = Player::getName();
         this->race = getRace();
     }
@@ -166,17 +167,34 @@ public:
     //~Mage() { delete[] &mages; };
 };
 
-void showAllPlayers() {
+void showAllPlayers(std::vector<Warrior> w, std::vector<Preist> p, std::vector<Mage> m) {
 
     std::cout << "-----------" << "\n WARRIORS LIST: \n" << "-----------";
 
+    for (Warrior warrior : w) {
+        std::cout << warrior.getName();
+        std::cout << "\n\n";
+        std::cout << warrior.getRaceName(warrior.getRace());
+        std::cout << "\n\n";
+        std::cout << warrior.attack();
+    }
+    std::cout << "-----------" << "\n PREISTSS LIST: \n" << "-----------";
+    for (Preist preist : p) {
+        std::cout << preist.getName();
+        std::cout << "\n\n";
+        std::cout << preist.getRaceName(preist.getRace());
+        std::cout << "\n\n";
+        std::cout << preist.attack();
+    }
 
-    //for (int i = 0; i < x.size(); i++) {
-    //    for (int j = 0; j < 5; j++) {
-    //        std::cout << j;
-      //  }
-        // std::cout << "\n";
-  //  }
+    std::cout << "-----------" << "\n MAGES LIST: \n" << "-----------";
+    for (Mage mage : m) {
+        std::cout << mage.getName();
+        std::cout << "\n\n";
+        std::cout << mage.getRaceName(mage.getRace());
+        std::cout << "\n\n";
+        std::cout << mage.attack();
+    }
 
 
 }
@@ -217,20 +235,14 @@ int main()
             preists.push_back(p);
             break;
         case 3:
-            std::cout << "You chose Warrior!\n";
+            std::cout << "You chose Mage!\n";
             m.setName();
             m.setRace();
             mages.push_back(m);
             break;
         case 4:
             std::cout << "Character Creation Done!.......\n You can now move to the next level!\n";
-            for (Warrior warrior : warriors) {
-                std::cout << warrior.getName();
-                std::cout << "\n\n";
-                std::cout << warrior.getRaceName(warrior.getRace());
-                std::cout << "\n\n";
-                std::cout << warrior.attack();
-            }
+            showAllPlayers(warriors, preists, mages);
             break;
         default:
             std::cout << "Try again........\n";
