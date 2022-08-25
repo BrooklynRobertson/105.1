@@ -1,266 +1,508 @@
 // brooklyn_robertson_105.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "Task2.h"
+#include "Task3.h"
 
-class Player {
+class Shape {
 protected:
-    string name;
-    Race race;
-    int hitPoints;
-    int magicPoints;
+	double base, height, result;//our member variables that derived classes will inherit
+	std::string name;
 public:
-    //default constructor, initializes a player with preset values
-    Player(string name = "player", Race race = Race::HUMAN, int hitPoints = 0, int magicPoints = 0) {
-        this->name = name;
-        //name = Player::name;
-        this->race = race;
-        //std::string raceStr = ;
-        this->hitPoints = hitPoints;
-        this->magicPoints = magicPoints;
-    };
+	Shape() : base(0), height(0), result(0), name("Default")
+	{ 	}
 
-    string getName() {
-        return name;
-    }
+	//function to display the physical shape
+	void printShape()  {
+		std::cout << "If you see this, you called the printShape() function in the SHAPE class.\n\n\n";
+	}
+
+	//returns the calculation of the area of a shape, takes double datatype values as param 
+	double calcArea(double a, double b) {
+		return a * b;
+	}
+
+	//takes input from user
+	void setData()  {
+		std::cout << "Please enter base in centimeters: \n";
+		std::cin >> base;
+		std::cout << "Please enter height in centimeters: \n;";
+		std::cin >> height;
+	}
+	
+	//gets value from private area of object
+	double getBase(double c) { return c; }
+	
+	//function displays a menu title containing 21 top & bottom astericks lines
+	void shapeMenu() {
 
 
-    void setName() {
-        std::cout << "What would you like your player to be called?\n\t\t";
-        std::cin >> name;
-    }
+		//loop to iterate three times:
+		//first and last iterations print the astericks line, 
+		for (int i = 0; i < 3; i++) {
+			if (i == 1) {
+				std::cout << "\n* Shapes Calculator *\n";//middle iteration prints the formatted param string name.
+			}
+			else {
 
-    const char* getRaceName(enum Race race) {//enum gets race name, and returns a const char pointer for easy access
-        switch (race) {
-        case Race::HUMAN:
-            return "HUMAN";
-            break;
-        case Race::ELF:
-            return "ELF";
-            break;
-        case Race::DWARF:
-            return "DWARF";
-            break;
-        case Race::ORC:
-            return "ORC";
-            break;
-        case Race::TROLL:
-            return "TROLL";
-            break;
-        }
-    }
+				for (int j = 0; j < 21; j++) {//print '*' 21 times in a line
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}
 
-    Race getRace() {
-        getRaceName(race);
-        switch (race) {
-        /*case Race::HUMAN:
-            getRaceName(race);
-            break;
-        case Race::ELF:
+	//OVERLOADED function (takes string param to reuse wth different names as the menu title)
+	void shapeMenu(std::string s) {
+		
 
-            break;
-        case Race::DWARF:
+		//loop to iterate three times:
+		//first and last iterations print the astericks line, 
+		for (int i = 0; i < 3; i++) {
+			if (i == 1) {
+				std::cout << "\n* " << s << " *\n";//middle iteration prints the formatted param string name.
+			}
+			else {
+				
+				for (int j = 0; j < 21; j++) {//print '*' 21 times in a line
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}
 
-            break;
-        case Race::ORC:
+	//OVERLOADED function (custom set astericks length) as well as string input
+	void shapeMenu(std::string s, int n) {
 
-            break;
-        case Race::TROLL:
+		
+		for (int i = 0; i < 3; i++) {//n takes value taken at function call
+			if (i == 1) {
+				std::cout << "\n* " << s << " *\n";
+			}
+			else {
+				
+				for (int j = 0; j < n; j++) {//n value taken at function call
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}
 
-            break;
-        default:
-            race = Race::HUMAN;
-            std::cout << "Your race is set to HUMAN as default....\n";
-            break;*/
-        }
-        return race;
-    }
 
-    void setRace() {
-        int temp;
-        std::cout << "Which race do you want?\n\t\t" <<
-            "1. Human!\n2. Elf\n3. Dwarf!\n4. Orc!\n5. Troll!\n";
-        std::cin >> temp;
-        switch (temp) {
-        case 1:
-            race = Race::HUMAN;
-            break;
-        case 2:
-            race = Race::ELF;
-            break;
-        case 3:
-            race = Race::DWARF;
-            break;
-        case 4:
-            race = Race::ORC;
-            break;
-        case 5:
-            race = Race::TROLL;
-            break;
-        default:
-            race = Race::HUMAN;
-            "Your race is being set to HUMAN as default....\n";
-            break;
-        }
-    }
-
-    int getHitPoints() {
-        return hitPoints;
-    }
-
-    void setHitPoints(int hitPoints) {
-        std::cout << "Hit points updated to: " << hitPoints;
-    }
-
-    int getMagicPoints() {
-        return magicPoints;
-    }
-
-    void setMagicPoints(int magicPoints) {
-        std::cout << "Magic points updated to: " << magicPoints;
-    }
-    string attack() {
-        return "No attack method defined yet!";
-    }
+	void giveResult() {
+		std::cout << "The result is: " << result << "square centimeters (sq.cm)\n\n";
+	}
 };
 
-class Warrior : public Player {
-private:
 
+//derived/child class of base/parent class (Shape)
+class Circle : public Shape {
+	//our member variables
+	const double pi{3.14};
+	double radius, result;
+	std::string name{ "Circle" };
 
 public:
-    Warrior(Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) {
-        this->name = Player::getName();
-        this->race = getRace();
-    }
-    string attack() {
-        return "\nI will destroy you with my sword!\n";
-    }
-    //~Warrior() { delete[] & warriors; };
+	Circle() : Shape()
+	{
+		height = pi; base = radius; Shape::result = result; Shape::name = name;
+		this->shapeMenu(name, 23);
+		this->printShape();//displays rectangle shape
+	}
+
+	//function to display the physical shape
+	void printShape() {
+		int choice;
+		bool looping = false;
+		std::cout << "\n\n";
+		for (int i = 0; i < 20; i++) {
+			for (int j = 50; j > 20; j--) {
+				std::cout << '*';
+			}
+			std::cout << "\n";
+		}
+		while (looping) {
+			std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
+				"1. Area (Area = length * width sq.units)\n" <<
+				"2. Perimeter (Perimeter = length * width * 2 sq.units)\n" <<
+				"3. Go back to main menu (Shapes Calculator)\n";
+
+			std::cin >> choice;
+
+			switch (choice) {
+			case 1:
+				setData();
+				result = calcArea(pi, radius);//calculate area and get result
+				giveResult();
+				break;
+			case 2:
+				setData();
+				result = calcPerimeter(pi, radius);//calculate perimeter and get result
+				giveResult();
+				break;
+			case 3:
+				looping = false;//end the loop
+				break;
+			}
+
+		}
+	}
+	
+
+	//returns the calculation of the area of a circle. a is pi so is overloaded
+	double calcArea(const double a, double b) {
+		b *= b;
+		return a * b;
+	}
+
+
+	//function returns perimeter based on given parameters. a is pi so is overloaded
+	double calcPerimeter(const double a, double b) {
+		double c{0};
+		c *= a * 2;
+		c = a * b;
+		return c;
+	}
+
+
+	//takes input from user (only radius)
+	void setData() {
+		std::cout << "Please enter radius in centimeters: \n";
+		std::cin >> base;
+	}
+
+
+	double getBase(double c) { return c; }
 };
 
-class Preist : public Player {
-private:
+//derived/child class of base/parent class (Shape)
+class Rectangle : public Shape {
+
+	double length, width, result;//our member variables that derived classes will inherit
+	std::string name{ "Rectangle" };
+
 public:
-    Preist(Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200) {
-        this->name = Player::getName();
-        this->race = getRace();
-    }
-    string attack() {
-        return "\nI will assault you with holy wrath!\n";
-    }
-    //~Preist() { delete[] & preists; };
+	Rectangle() : Shape() //default contructor
+	{
+		std::cout << "rectangle initialized....\n";
+		base = length; height = width, Shape::result = result;
+		this->shapeMenu(name, 23);
+		this->printShape();//displays rectangle shape
+		
+	}
+	//function to display the physical shape
+		//function to display the physical shape and loop to get calulations done
+	void printShape() {
+		int choice;
+		bool looping = false;
+
+		std::cout << "\n\n";
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 8; j++) {
+				std::cout << '*';
+			}
+			std::cout << "\n";
+		}
+		while (looping) {
+			std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
+				"1. Area (Area = length * width sq.units)\n" <<
+				"2. Perimeter (Perimeter = length * width * 2 sq.units)\n" <<
+				"3. Go back to main menu (Shapes Calculator)\n";
+
+			std::cin >> choice;
+
+			switch (choice) {
+			case 1:
+				setData();
+				result = calcArea(length,width);//calculate area and get result
+				giveResult();
+				break;
+			case 2:
+				setData();
+				result = calcPerimeter(length, width);//calculate perimeter and get result
+				giveResult();
+				break;
+			case 3:
+				looping = false;//end the loop
+				break;
+			}
+
+		}
+	}
+
+	//returns the calculation of the area of a shape, takes double datatype values as param 
+	double calcArea(double a, double b) {
+		return a * b;
+	}
+
+	//function returns perimeter based on given parameters
+	double calcPerimeter(double a, double b) {
+		return (a * b) * 2;
+	}
+
+
+	//getter, returns a value
+	double getData(double c) { return c; }
+
+//OVERLOADED function to display menu title and name
+	void shapeMenu(std::string s, int n) {
+
+
+		for (int i = 0; i < 3; i++) {//n takes value taken at function call
+			if (i == 1) {
+				std::cout << "*" << name << "*";//middle iteration prints the title .
+			}
+			else {
+				//n value taken at function call
+				for (int j = 0; j < n; j++) {
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}	
+	
+
+	//function override to change values to display relevant variables to user (length/width)
+	void setData() {
+		std::cout << "\nPlease enter length in cm: ";
+		std::cin >> length;
+		std::cout << "\nPlease enter width in cm: ";
+		std::cin >> width;
+	}
 };
 
-class Mage : public Player {
-private:
-    //std::vector<Mage> mages;
+//derived/child class of base/parent class (Shape)
+class Square : public Shape {
+	double side, result;//our member variables that derived classes will inherit
+	std::string name{ "Square Calculator" };
+
 public:
-    Mage() {}
-    Mage(string name, Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) {
-        this->name = Player::getName();
-        this->race = getRace();
-    }
-    string attack() {
-        return "\nI will crush you with my arcane missiles!\n";
-    }
-    //~Mage() { delete[] &mages; };
+	Square() : Shape() //default contructor
+	{
+		std::cout << "square initialized....\n";
+		base = side; height = side, Shape::result = result;
+		this->shapeMenu(name, 24);//runs menu for square
+		this->printShape();//displays squares shape 
+
+	}
+	//function to display the physical shape and loop to get calulations done
+	void printShape() {
+		int choice;
+		bool looping = false;
+		
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 10; j++) {
+				std::cout << '*';
+			}
+			std::cout << "\n";
+		}
+		looping = true;
+		while (looping) {
+std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
+			"1. Area (Area = side * side sq.units)\n" <<
+			"2. Perimeter (Perimeter = 4 * side sq.units)\n" <<
+			"3. Go back to main menu (Shapes Calculator)\n";
+
+		std::cin >> choice;
+		
+		switch (choice) {
+		case 1:
+			setData();
+			result = calcArea(side);//calculate area and get result
+			giveResult();
+			break;
+		case 2:
+			setData();
+			result = calcPerimeter(side);//calculate perimeter and get result
+			giveResult();
+			break;
+		case 3:
+			looping = false;//end the loop
+			break;
+		}
+		
+		}
+	}
+
+	//OVERLOADED returns the calculation of the area of a square
+	double calcArea(double a) {
+		return (a *= a) * 4;
+	}
+
+	//OVERLOADED function returns square perimeter based on single param
+	double calcPerimeter(double a) {
+		return (a *= a) * 2;
+	}
+
+
+	//getter, returns a value
+	double getData(double c) { return c; }
+
+	//OVERLOADED function to display menu title and name
+	void shapeMenu(std::string s, int n) {
+
+		std::cout << "\n\n";
+		for (int i = 0; i < 3; i++) {//n takes value taken at function call
+			if (i == 1) {
+				std::cout << "* " << name << " *";//middle iteration prints the title .
+			}
+			else {
+				//n value taken at function call
+				for (int j = 0; j < n; j++) {
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}
+
+
+	//function override to change values to display relevant variable to user (side of square)
+	void setData() {
+		std::cout << "\nPlease enter side in cm: ";
+		std::cin >> side;
+	}
 };
 
-void showAllPlayers(std::vector<Warrior> w, std::vector<Preist> p, std::vector<Mage> m) {
+//derived/child class of base/parent class (Shape)
+class Triangle : public Shape {
+	double base, height, result;//our member variables that derived classes will inherit
+	std::string name{"Triangle"};
+public:
+	Triangle() : Shape() //triangle is of obj shape
+	{
+		Shape::base = base, Shape::height = height, Shape::result = result, Shape::name = name;//setting values to those of shapes object for best practice
+	}
 
-    std::cout << "-----------" << "\n WARRIORS LIST: \n" << "-----------";
+	//function to display a triangle and options for calculation
+	void printShape() {
+		std::cout << "\n\n";
+		for (int i = 0; i < 20; i++)
+		{
+			for (int j = 0; j < i; j++)
+			{
+				std::cout << "* ";
+			}
+			std::cout << "\n";
+		}
 
-    for (Warrior warrior : w) {
-        std::cout << warrior.getName();
-        std::cout << "\n\n";
-        std::cout << warrior.getRaceName(warrior.getRace());
-        std::cout << "\n\n";
-        std::cout << warrior.attack();
-    }
-    std::cout << "-----------" << "\n PREISTSS LIST: \n" << "-----------";
-    for (Preist preist : p) {
-        std::cout << preist.getName();
-        std::cout << "\n\n";
-        std::cout << preist.getRaceName(preist.getRace());
-        std::cout << "\n\n";
-        std::cout << preist.attack();
-    }
+			int choice;
+			bool looping = false;
 
-    std::cout << "-----------" << "\n MAGES LIST: \n" << "-----------";
-    for (Mage mage : m) {
-        std::cout << mage.getName();
-        std::cout << "\n\n";
-        std::cout << mage.getRaceName(mage.getRace());
-        std::cout << "\n\n";
-        std::cout << mage.attack();
-    }
+			while (looping) {
+				std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
+					"1. Area (Area = 0.5 * base * height sq.units)\n" <<
+					"2. Perimeter (Perimeter = 1/2 triangle and pythagorus theorem for side, (sides * 2 + base) * 2 for total sq.units)\n" <<
+					"3. Go back to main menu (Shapes Calculator)\n";
+
+				std::cin >> choice;
+
+				switch (choice) {
+				case 1:
+					setData();
+					result = calcArea(base,height);//calculate area and get result
+					giveResult();
+					break;
+				case 2:
+					setData();
+					result = calcPerimeter(base,height);//calculate perimeter and get result
+					giveResult();
+					break;
+				case 3:
+					looping = false;//end the loop
+					break; 
+				}
+
+			}
+		}
+	
+
+	//returns the calculation of the area of a triangle, takes double datatype values as param 
+	//formula: 1/2 base * height;
+	double calcArea(double a, double b) {
+		a *= 0.5;
+		return a * b;
+	}
+
+	//function returns perimeter of ISOCELES triangle (assuming portico for scope) 
+	// 
+	//formula: pythag for half the triangle (C^2 = A^2 + B^2) so C is the sides
+	// 
+	//formula for icoseles perimeter: 2a + b. But then double that result for the other half
+	double calcPerimeter(double a, double b) {
+		
+		double c{0};
+		a *= a;//base squared
+		b *= b;//height squared
+		c *= a + b;//the two sides are now each known as value of c
+		c *= 2 + a;//side c times 2 + base a ... 
+		c *= 2;//times 2 is perimeter
+		
+		return c;
+	}
+
+	//takes inputs from user
+	void setData() {
+		std::cout << "Please enter base (longest length of shape)in centimeters: \n";
+		std::cin >> base;
+		std::cout << "Please enter height (highest point straight to the bottom) in centimeters: \n;";
+		std::cin >> height;
+	}
+
+	//gets value from private area of triangle
+	double getBase(double c) { return c; }
+
+	//OVERLOADED function to display menu title and name 
+	void shapeMenu(int n) {
 
 
-}
+		for (int i = 0; i < 3; i++) {//n takes value taken at function call
+			if (i == 1) {
+				std::cout << "* " << name << " *";//middle iteration prints the title .
+			}
+			else {
+				//n value taken at function call
+				for (int j = 0; j < n; j++) {
+					std::cout << '*';
+				}
+			}
+			std::cout << "\n";//new line after each line, including at the end of program.
+		}
+	}
+};
 
 int main()
 {
+	Shape *ptr;
+	//function starts program choosing shape or exiting program
+	
+		int choice{ 0 };
 
-    int choice{ 0 };
-    std::vector<Warrior> warriors;
-    std::vector<Preist> preists;
-    std::vector<Mage> mages;
+		std::cout << "Please choose option (1,2,3,4 or 5) from the following: \n" <<
+			"1. Square\n 2. Rectangle\n 3. Triangle\n 4. Circle\n 5. Exit\n";
+		std::cin >> choice;
 
-    Warrior w;
-    Preist p;
-    Mage m;
-
-    do {
-        std::cout << "CHARACTER CREATION:\n" << "Which of the following would you like?\n" <<
-            "1. Create a Warrior!\n 2. Create a Preist!\n 3. Create a Mage!\n 4. Finish creating player characters!\n";
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1:
-            std::cout << "You chose Warrior!\n";
-            //w = *new Warrior();
-            w.setName();
-            std::cout << "Name updated: " << w.getName() << "\n";
-            w.setRace();
-            std::cout << "Your new race is " << w.getRaceName(w.getRace()) << ".\n";
-
-            warriors.push_back(w);
-            std::cout << warriors.size();
-            break;
-        case 2:
-            std::cout << "You chose Preist!\n";
-            p.setName();
-            p.setRace();
-            preists.push_back(p);
-            break;
-        case 3:
-            std::cout << "You chose Mage!\n";
-            m.setName();
-            m.setRace();
-            mages.push_back(m);
-            break;
-        case 4:
-            std::cout << "Character Creation Done!.......\n You can now move to the next level!\n";
-            showAllPlayers(warriors,preists,mages);
-            break;
-        default:
-            std::cout << "Try again........\n";
-            break;
-        }
-    } while (choice != 4);
+		switch (choice) {
+		case 1:
+			ptr = new Square();
+			break;
+		case 2:
+			ptr = new Rectangle();
+			break;
+		case 3:
+			ptr = new Triangle();
+			break;
+		case 4:
+			ptr = new Circle();
+			break;
+		case 5:
+			return 0;
+			
+	}
 
 }
 
 
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

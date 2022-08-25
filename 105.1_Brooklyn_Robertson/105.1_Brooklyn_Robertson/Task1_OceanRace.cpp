@@ -148,4 +148,6 @@ public:
     };
 
 
-
+//static int for yacht count
+    //virtual function / abstract for location class
+    //virtual function / abstract for location class
