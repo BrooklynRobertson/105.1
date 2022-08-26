@@ -1,508 +1,128 @@
 // brooklyn_robertson_105.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//270149168
 
-#include "Task3.h"
+#include "Task1.h"
 
-class Shape {
+class Location {
+private:
+    int degrees;
+    float minutes;
+    char direction;
+    std::string lat, lon;
+
+public:
+    //Default constructor with default values upon creation
+    Location(int degrees = 0, float minutes = 0, char direction = ' ') {
+        this->degrees = degrees;
+        this->minutes = minutes;
+        this->direction = direction;//location object created (eg, latitude) constructor  calls getpos for user input to return the value to where it was called/created.
+    }
+
+    //function to get location position (latitude and longitude)
+    Location getpos() {
+        int  degrees;
+        float minutes;
+        char direction;
+
+        std::cout << "Please enter degrees: (between 0-180)\n";
+        std::cin >> degrees;
+        if (degrees < 0 || degrees > 180) {
+            std::cout << "Number has to be between 0 and 180!\n";
+            
+        }
+        //positions.push_back(std::to_string(degrees));
+        std::cout << "Please enter minutes: (0-60)\n";
+        std::cin >> minutes;
+        if (minutes < 0 || minutes > 60) {
+            std::cout << "Number has to be between 0 and 60!\n";
+           
+        }
+        //positions.push_back(minutes)
+        std::cout << "Please enter direction ('N', 'S', 'E' or 'W')\n";
+        std::cin >> direction;
+        switch (toupper(direction)) {
+        case 'N': case 'n': case 'S': case 's':
+            if (degrees > 90) {
+                std::cout << "WARNING: North and South (latitude) coordinates need to be 90\xf8 or less... \n";
+            }
+            break;
+
+        default:
+            break;
+        }
+
+        Location position; //creating a location position
+
+        return position;// returning back to Yacht class(where it was created)
+    }
+
+    //overloaded operatior to cout location objects
+    void operator << (Location& location) const  {
+        std::cout << location.degrees << "\xf8" << location.minutes << "\'" << location.direction;
+    }
+};
+
+class Yacht {
+
 protected:
-	double base, height, result;//our member variables that derived classes will inherit
-	std::string name;
+
+    int serialNumber;
+    Location* latitude, * longitude;
+
 public:
-	Shape() : base(0), height(0), result(0), name("Default")
-	{ 	}
 
-	//function to display the physical shape
-	void printShape()  {
-		std::cout << "If you see this, you called the printShape() function in the SHAPE class.\n\n\n";
-	}
+    Yacht(int serialNumber) {
+        this->serialNumber = serialNumber;
 
-	//returns the calculation of the area of a shape, takes double datatype values as param 
-	double calcArea(double a, double b) {
-		return a * b;
-	}
+        //creating the location objects
+        std::cout << "Latitude : ";
+        this->latitude = new Location();
 
-	//takes input from user
-	void setData()  {
-		std::cout << "Please enter base in centimeters: \n";
-		std::cin >> base;
-		std::cout << "Please enter height in centimeters: \n;";
-		std::cin >> height;
-	}
-	
-	//gets value from private area of object
-	double getBase(double c) { return c; }
-	
-	//function displays a menu title containing 21 top & bottom astericks lines
-	void shapeMenu() {
+        std::cout << "Longitude :";
+        this->longitude = new Location();
+
+    }
+
+    //returns a position (longitude or latitude) in a easier to use format by calling getpos in Locatoin class
+    void get_pos() {
+        latitude->getpos();
+        longitude->getpos();
+    }
 
 
-		//loop to iterate three times:
-		//first and last iterations print the astericks line, 
-		for (int i = 0; i < 3; i++) {
-			if (i == 1) {
-				std::cout << "\n* Shapes Calculator *\n";//middle iteration prints the formatted param string name.
-			}
-			else {
+    void display() {
+        Location *lat;
+        lat = latitude;
+        std::cout << "This yachts serial number is: " << this->serialNumber << " and its location is: ";
+           
+        std::cout << lat;
 
-				for (int j = 0; j < 21; j++) {//print '*' 21 times in a line
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}
+        std::cout << "latitude, and ";
 
-	//OVERLOADED function (takes string param to reuse wth different names as the menu title)
-	void shapeMenu(std::string s) {
-		
+        std::cout << longitude;
+        std::cout << " longitude.\n\n";
+    };
 
-		//loop to iterate three times:
-		//first and last iterations print the astericks line, 
-		for (int i = 0; i < 3; i++) {
-			if (i == 1) {
-				std::cout << "\n* " << s << " *\n";//middle iteration prints the formatted param string name.
-			}
-			else {
-				
-				for (int j = 0; j < 21; j++) {//print '*' 21 times in a line
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}
-
-	//OVERLOADED function (custom set astericks length) as well as string input
-	void shapeMenu(std::string s, int n) {
-
-		
-		for (int i = 0; i < 3; i++) {//n takes value taken at function call
-			if (i == 1) {
-				std::cout << "\n* " << s << " *\n";
-			}
-			else {
-				
-				for (int j = 0; j < n; j++) {//n value taken at function call
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}
-
-
-	void giveResult() {
-		std::cout << "The result is: " << result << "square centimeters (sq.cm)\n\n";
-	}
 };
 
 
-//derived/child class of base/parent class (Shape)
-class Circle : public Shape {
-	//our member variables
-	const double pi{3.14};
-	double radius, result;
-	std::string name{ "Circle" };
-
-public:
-	Circle() : Shape()
-	{
-		height = pi; base = radius; Shape::result = result; Shape::name = name;
-		this->shapeMenu(name, 23);
-		this->printShape();//displays rectangle shape
-	}
-
-	//function to display the physical shape
-	void printShape() {
-		int choice;
-		bool looping = false;
-		std::cout << "\n\n";
-		for (int i = 0; i < 20; i++) {
-			for (int j = 50; j > 20; j--) {
-				std::cout << '*';
-			}
-			std::cout << "\n";
-		}
-		while (looping) {
-			std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
-				"1. Area (Area = length * width sq.units)\n" <<
-				"2. Perimeter (Perimeter = length * width * 2 sq.units)\n" <<
-				"3. Go back to main menu (Shapes Calculator)\n";
-
-			std::cin >> choice;
-
-			switch (choice) {
-			case 1:
-				setData();
-				result = calcArea(pi, radius);//calculate area and get result
-				giveResult();
-				break;
-			case 2:
-				setData();
-				result = calcPerimeter(pi, radius);//calculate perimeter and get result
-				giveResult();
-				break;
-			case 3:
-				looping = false;//end the loop
-				break;
-			}
-
-		}
-	}
-	
-
-	//returns the calculation of the area of a circle. a is pi so is overloaded
-	double calcArea(const double a, double b) {
-		b *= b;
-		return a * b;
-	}
-
-
-	//function returns perimeter based on given parameters. a is pi so is overloaded
-	double calcPerimeter(const double a, double b) {
-		double c{0};
-		c *= a * 2;
-		c = a * b;
-		return c;
-	}
-
-
-	//takes input from user (only radius)
-	void setData() {
-		std::cout << "Please enter radius in centimeters: \n";
-		std::cin >> base;
-	}
-
-
-	double getBase(double c) { return c; }
-};
-
-//derived/child class of base/parent class (Shape)
-class Rectangle : public Shape {
-
-	double length, width, result;//our member variables that derived classes will inherit
-	std::string name{ "Rectangle" };
-
-public:
-	Rectangle() : Shape() //default contructor
-	{
-		std::cout << "rectangle initialized....\n";
-		base = length; height = width, Shape::result = result;
-		this->shapeMenu(name, 23);
-		this->printShape();//displays rectangle shape
-		
-	}
-	//function to display the physical shape
-		//function to display the physical shape and loop to get calulations done
-	void printShape() {
-		int choice;
-		bool looping = false;
-
-		std::cout << "\n\n";
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 8; j++) {
-				std::cout << '*';
-			}
-			std::cout << "\n";
-		}
-		while (looping) {
-			std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
-				"1. Area (Area = length * width sq.units)\n" <<
-				"2. Perimeter (Perimeter = length * width * 2 sq.units)\n" <<
-				"3. Go back to main menu (Shapes Calculator)\n";
-
-			std::cin >> choice;
-
-			switch (choice) {
-			case 1:
-				setData();
-				result = calcArea(length,width);//calculate area and get result
-				giveResult();
-				break;
-			case 2:
-				setData();
-				result = calcPerimeter(length, width);//calculate perimeter and get result
-				giveResult();
-				break;
-			case 3:
-				looping = false;//end the loop
-				break;
-			}
-
-		}
-	}
-
-	//returns the calculation of the area of a shape, takes double datatype values as param 
-	double calcArea(double a, double b) {
-		return a * b;
-	}
-
-	//function returns perimeter based on given parameters
-	double calcPerimeter(double a, double b) {
-		return (a * b) * 2;
-	}
-
-
-	//getter, returns a value
-	double getData(double c) { return c; }
-
-//OVERLOADED function to display menu title and name
-	void shapeMenu(std::string s, int n) {
-
-
-		for (int i = 0; i < 3; i++) {//n takes value taken at function call
-			if (i == 1) {
-				std::cout << "*" << name << "*";//middle iteration prints the title .
-			}
-			else {
-				//n value taken at function call
-				for (int j = 0; j < n; j++) {
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}	
-	
-
-	//function override to change values to display relevant variables to user (length/width)
-	void setData() {
-		std::cout << "\nPlease enter length in cm: ";
-		std::cin >> length;
-		std::cout << "\nPlease enter width in cm: ";
-		std::cin >> width;
-	}
-};
-
-//derived/child class of base/parent class (Shape)
-class Square : public Shape {
-	double side, result;//our member variables that derived classes will inherit
-	std::string name{ "Square Calculator" };
-
-public:
-	Square() : Shape() //default contructor
-	{
-		std::cout << "square initialized....\n";
-		base = side; height = side, Shape::result = result;
-		this->shapeMenu(name, 24);//runs menu for square
-		this->printShape();//displays squares shape 
-
-	}
-	//function to display the physical shape and loop to get calulations done
-	void printShape() {
-		int choice;
-		bool looping = false;
-		
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 10; j++) {
-				std::cout << '*';
-			}
-			std::cout << "\n";
-		}
-		looping = true;
-		while (looping) {
-std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
-			"1. Area (Area = side * side sq.units)\n" <<
-			"2. Perimeter (Perimeter = 4 * side sq.units)\n" <<
-			"3. Go back to main menu (Shapes Calculator)\n";
-
-		std::cin >> choice;
-		
-		switch (choice) {
-		case 1:
-			setData();
-			result = calcArea(side);//calculate area and get result
-			giveResult();
-			break;
-		case 2:
-			setData();
-			result = calcPerimeter(side);//calculate perimeter and get result
-			giveResult();
-			break;
-		case 3:
-			looping = false;//end the loop
-			break;
-		}
-		
-		}
-	}
-
-	//OVERLOADED returns the calculation of the area of a square
-	double calcArea(double a) {
-		return (a *= a) * 4;
-	}
-
-	//OVERLOADED function returns square perimeter based on single param
-	double calcPerimeter(double a) {
-		return (a *= a) * 2;
-	}
-
-
-	//getter, returns a value
-	double getData(double c) { return c; }
-
-	//OVERLOADED function to display menu title and name
-	void shapeMenu(std::string s, int n) {
-
-		std::cout << "\n\n";
-		for (int i = 0; i < 3; i++) {//n takes value taken at function call
-			if (i == 1) {
-				std::cout << "* " << name << " *";//middle iteration prints the title .
-			}
-			else {
-				//n value taken at function call
-				for (int j = 0; j < n; j++) {
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}
-
-
-	//function override to change values to display relevant variable to user (side of square)
-	void setData() {
-		std::cout << "\nPlease enter side in cm: ";
-		std::cin >> side;
-	}
-};
-
-//derived/child class of base/parent class (Shape)
-class Triangle : public Shape {
-	double base, height, result;//our member variables that derived classes will inherit
-	std::string name{"Triangle"};
-public:
-	Triangle() : Shape() //triangle is of obj shape
-	{
-		Shape::base = base, Shape::height = height, Shape::result = result, Shape::name = name;//setting values to those of shapes object for best practice
-	}
-
-	//function to display a triangle and options for calculation
-	void printShape() {
-		std::cout << "\n\n";
-		for (int i = 0; i < 20; i++)
-		{
-			for (int j = 0; j < i; j++)
-			{
-				std::cout << "* ";
-			}
-			std::cout << "\n";
-		}
-
-			int choice;
-			bool looping = false;
-
-			while (looping) {
-				std::cout << "Please choose (1, 2 or 3) of following options: \n" <<
-					"1. Area (Area = 0.5 * base * height sq.units)\n" <<
-					"2. Perimeter (Perimeter = 1/2 triangle and pythagorus theorem for side, (sides * 2 + base) * 2 for total sq.units)\n" <<
-					"3. Go back to main menu (Shapes Calculator)\n";
-
-				std::cin >> choice;
-
-				switch (choice) {
-				case 1:
-					setData();
-					result = calcArea(base,height);//calculate area and get result
-					giveResult();
-					break;
-				case 2:
-					setData();
-					result = calcPerimeter(base,height);//calculate perimeter and get result
-					giveResult();
-					break;
-				case 3:
-					looping = false;//end the loop
-					break; 
-				}
-
-			}
-		}
-	
-
-	//returns the calculation of the area of a triangle, takes double datatype values as param 
-	//formula: 1/2 base * height;
-	double calcArea(double a, double b) {
-		a *= 0.5;
-		return a * b;
-	}
-
-	//function returns perimeter of ISOCELES triangle (assuming portico for scope) 
-	// 
-	//formula: pythag for half the triangle (C^2 = A^2 + B^2) so C is the sides
-	// 
-	//formula for icoseles perimeter: 2a + b. But then double that result for the other half
-	double calcPerimeter(double a, double b) {
-		
-		double c{0};
-		a *= a;//base squared
-		b *= b;//height squared
-		c *= a + b;//the two sides are now each known as value of c
-		c *= 2 + a;//side c times 2 + base a ... 
-		c *= 2;//times 2 is perimeter
-		
-		return c;
-	}
-
-	//takes inputs from user
-	void setData() {
-		std::cout << "Please enter base (longest length of shape)in centimeters: \n";
-		std::cin >> base;
-		std::cout << "Please enter height (highest point straight to the bottom) in centimeters: \n;";
-		std::cin >> height;
-	}
-
-	//gets value from private area of triangle
-	double getBase(double c) { return c; }
-
-	//OVERLOADED function to display menu title and name 
-	void shapeMenu(int n) {
-
-
-		for (int i = 0; i < 3; i++) {//n takes value taken at function call
-			if (i == 1) {
-				std::cout << "* " << name << " *";//middle iteration prints the title .
-			}
-			else {
-				//n value taken at function call
-				for (int j = 0; j < n; j++) {
-					std::cout << '*';
-				}
-			}
-			std::cout << "\n";//new line after each line, including at the end of program.
-		}
-	}
-};
 
 int main()
 {
-	Shape *ptr;
-	//function starts program choosing shape or exiting program
-	
-		int choice{ 0 };
-
-		std::cout << "Please choose option (1,2,3,4 or 5) from the following: \n" <<
-			"1. Square\n 2. Rectangle\n 3. Triangle\n 4. Circle\n 5. Exit\n";
-		std::cin >> choice;
-
-		switch (choice) {
-		case 1:
-			ptr = new Square();
-			break;
-		case 2:
-			ptr = new Rectangle();
-			break;
-		case 3:
-			ptr = new Triangle();
-			break;
-		case 4:
-			ptr = new Circle();
-			break;
-		case 5:
-			return 0;
-			
-	}
-
-}
+    static int yachtCount{ 0 }; //counter for each yacht created
+    std::vector<Yacht> contestants; //vector to store our yachts(contestents in race)
 
 
+    //make yachts
+    for (int i = 0; i < 3; i++) {
+        std::cout << "Enter details for Yacht " << i + 1 << ": \n";
+        yachtCount++;
+
+        contestants.push_back(Yacht(i));
+        contestants[i].get_pos();
+        contestants[i].display();
+        std::cout << "Yacht recorded!\n";
+
+    }
+
+};

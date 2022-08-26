@@ -20,16 +20,18 @@ public:
         this->magicPoints = magicPoints;
     };
 
+    //gets name
     string getName() {
         return name;
     }
 
-
+    //sets name
     void setName() {
         std::cout << "What would you like your player to be called?\n\t\t";
         std::cin >> name;
     }
 
+    //gets the name of the race type to a const char* so i can std::cout it
     const char* getRaceName(enum Race race) {//enum gets race name, and returns a const char pointer for easy access
         switch (race) {
         case Race::HUMAN:
@@ -50,32 +52,13 @@ public:
         }
     }
 
+    //gets race
     Race getRace() {
         getRaceName(race);
-        switch (race) {
-            /*case Race::HUMAN:
-                getRaceName(race);
-                break;
-            case Race::ELF:
-
-                break;
-            case Race::DWARF:
-
-                break;
-            case Race::ORC:
-
-                break;
-            case Race::TROLL:
-
-                break;
-            default:
-                race = Race::HUMAN;
-                std::cout << "Your race is set to HUMAN as default....\n";
-                break;*/
-        }
         return race;
     }
 
+    //sets race
     void setRace() {
         int temp;
         std::cout << "Which race do you want?\n\t\t" <<
@@ -124,6 +107,7 @@ public:
     }
 };
 
+//worriar class
 class Warrior : public Player {
 private:
 
@@ -136,11 +120,11 @@ public:
     string attack() {
         return "\nI will destroy you with my sword!\n";
     }
-    //~Warrior() { delete[] & warriors; };
+    
 };
 
+//preist class
 class Preist : public Player {
-private:
 public:
     Preist(Race race = Race::HUMAN, int hitPoints = 100, int magicPoints = 200) {
         this->name = Player::getName();
@@ -149,12 +133,11 @@ public:
     string attack() {
         return "\nI will assault you with holy wrath!\n";
     }
-    //~Preist() { delete[] & preists; };
+ 
 };
 
+//mage cclass
 class Mage : public Player {
-private:
-    //std::vector<Mage> mages;
 public:
     Mage() {}
     Mage(string name, Race race = Race::HUMAN, int hitPoints = 200, int magicPoints = 0) {
@@ -164,9 +147,9 @@ public:
     string attack() {
         return "\nI will crush you with my arcane missiles!\n";
     }
-    //~Mage() { delete[] &mages; };
 };
 
+//function to show all players in each class
 void showAllPlayers(std::vector<Warrior> w, std::vector<Preist> p, std::vector<Mage> m) {
 
     std::cout << "-----------" << "\n WARRIORS LIST: \n" << "-----------";
@@ -195,13 +178,11 @@ void showAllPlayers(std::vector<Warrior> w, std::vector<Preist> p, std::vector<M
         std::cout << "\n\n";
         std::cout << mage.attack();
     }
-
-
 }
 
 int main()
 {
-
+    //variables needed and vectors
     int choice{ 0 };
     std::vector<Warrior> warriors;
     std::vector<Preist> preists;
@@ -211,6 +192,7 @@ int main()
     Preist p;
     Mage m;
 
+    //dowhile to create players
     do {
         std::cout << "CHARACTER CREATION:\n" << "Which of the following would you like?\n" <<
             "1. Create a Warrior!\n 2. Create a Preist!\n 3. Create a Mage!\n 4. Finish creating player characters!\n";
@@ -251,16 +233,3 @@ int main()
     } while (choice != 4);
 
 }
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
